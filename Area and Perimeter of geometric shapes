@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() {
+    
+    float r,a,l,b;
+    float as,ps,ac,pc,ar,pr;
+    const float pi=3.1416;
+    scanf("%f",&r);
+    scanf("%f",&a);
+    scanf("%f %f",&l,&b);
+    ac= pi*r*r;
+    pc= 2*pi*r;
+    printf("Circle: %.2f %.2f\n",ac,pc);
+    as= a*a;
+    ps= 4*a;
+    printf("Square: %.2f %.2f\n",as,ps);
+    ar= l*b;
+    pr= 2*(l+b);
+    printf("Rectangle: %.2f %.2f\n",ar,pr);
+    return 0;
+}
