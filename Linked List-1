@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* newNode(int data) {
+    struct Node* n = (struct Node*)malloc(sizeof(struct Node));
+    n->data = data;
+    n->next = NULL;
+    return n;
+}
+
+struct Node* insertEnd(struct Node* head, int data) {
+    if (!head) return newNode(data);
+    struct Node* t = head;
+    while (t->next) t = t->next;
+    t->next = newNode(data);
+    return head;
+}
+
+struct Node* insertBeginning(struct Node* head, int data) {
+    struct Node* n = newNode(data);
+    n->next = head;
+    return n;
+}
+
+struct Node* deletePosition(struct Node* head, int pos) {
+    if (!head) return head;
+    if (pos == 1) {
+        struct Node* t = head;
+        head = head->next;
+        free(t);
+        return head;
+    }
+    struct Node* t = head;
+    for (int i = 1; i < pos - 1 && t->next; i++) t = t->next;
+    if (t->next) {
+        struct Node* d = t->next;
+        t->next = d->next;
+        free(d);
+    }
+    return head;
+}
+
+struct Node* insertAtPosition(struct Node* head, int pos, int data) {
+    if (pos == 1) return insertBeginning(head, data);
+    struct Node* t = head;
+    for (int i = 1; i < pos - 1 && t->next; i++) t = t->next;
+    struct Node* n = newNode(data);
+    n->next = t->next;
+    t->next = n;
+    return head;
+}
+
+void display(struct Node* head) {
+    for (; head; head = head->next)
+        printf("%d ", head->data);
+}
+
+int main() {
+    int n, x, pos, data;
+    struct Node* head = NULL;
+
+    scanf("%d", &n);
+    while (n--) {
+        scanf("%d", &x);
+        head = insertEnd(head, x);
+    }
+
+    scanf("%d", &data);
+    head = insertBeginning(head, data);
+
+    scanf("%d", &pos);
+    head = deletePosition(head, pos);
+
+    scanf("%d", &data);
+    head = insertEnd(head, data);
+
+    scanf("%d %d", &pos, &data);
+    head = insertAtPosition(head, pos, data);
+
+    display(head);
+    return 0;
+}
