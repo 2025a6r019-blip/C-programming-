@@ -1,0 +1,222 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+struct Node* head = NULL;
+struct Node* createNode(int data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = temp->prev = NULL;
+    return temp;
+}
+
+int countNodes() {
+    if (head == NULL) return 0;
+    int count = 0;
+    struct Node* temp = head;
+    do {
+        count++;
+        temp = temp->next;
+    } while (temp != head);
+    return count;
+}
+
+void insertEnd(int data) {
+    struct Node* newNode = createNode(data);
+    if (head == NULL) {
+        head = newNode;
+        newNode->next = newNode->prev = newNode;
+        return;
+    }
+
+    struct Node* last = head->prev;
+    last->next = newNode;
+    newNode->prev = last;
+    newNode->next = head;
+    head->prev = newNode;
+}
+
+void insertBeg(int data) {
+    struct Node* newNode = createNode(data);
+    if (head == NULL) {
+        head = newNode;
+        newNode->next = newNode->prev = newNode;
+        return;
+    }
+
+    struct Node* last = head->prev;
+    newNode->next = head;
+    newNode->prev = last;
+    last->next = newNode;
+    head->prev = newNode;
+    head = newNode;
+}
+
+void insertPos(int data, int pos) {
+    int n = countNodes();
+    if (pos < 1 || pos > n + 1) return;
+    if (pos == 1) {
+        insertBeg(data);
+        return;
+    }
+
+    struct Node* temp = head;
+    for (int i = 1; i < pos - 1; i++)
+        temp = temp->next;
+    struct Node* newNode = createNode(data);
+    struct Node* nextNode = temp->next;
+    temp->next = newNode;
+    newNode->prev = temp;
+    newNode->next = nextNode;
+    nextNode->prev = newNode;
+}
+
+void deleteBeg() {
+    if (head == NULL) return;
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct Node* last = head->prev;
+    struct Node* temp = head;
+    head = head->next;
+    head->prev = last;
+    last->next = head;
+    free(temp);
+}
+
+void deleteEnd() {
+    if (head == NULL) return;
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+        return;
+    }
+    struct Node* last = head->prev;
+    struct Node* newLast = last->prev;
+    newLast->next = head;
+    head->prev = newLast;
+
+    free(last);
+}
+
+void deleteValue(int x) {
+    if (head == NULL) return;
+    struct Node* temp = head;
+    do {
+        if (temp->data == x) {
+            if (temp->next == temp) {
+                free(temp);
+                head = NULL;
+                return;
+            }
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+            if (temp == head)
+                head = temp->next;
+            free(temp);
+            return;
+        }
+        temp = temp->next;
+    } while (temp != head);
+}
+
+void search(int x) {
+    if (head == NULL) {
+        printf("-1\n");
+        return;
+    }
+    int pos = 1;
+    struct Node* temp = head;
+    do {
+        if (temp->data == x) {
+            printf("%d\n", pos);
+            return;
+        }
+        temp = temp->next;
+        pos++;
+    } while (temp != head);
+    printf("-1\n");
+}
+
+void printList() {
+    if (head == NULL) {
+        printf("EMPTY\n");
+        return;
+    }
+    struct Node* temp = head;
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+
+    printf("\n");
+}
+
+void printReverse() {
+    if (head == NULL) {
+        printf("EMPTY\n");
+        return;
+    }
+    struct Node* temp = head->prev;
+    do {
+        printf("%d ", temp->data);
+        temp = temp->prev;
+    } while (temp != head->prev);
+
+    printf("\n");
+}
+
+int main() {
+    int Q;
+    scanf("%d", &Q);
+
+    while (Q--) {
+        int code, x, p;
+        scanf("%d", &code);
+        switch (code) {
+            case 1:
+                scanf("%d", &x);
+                insertEnd(x);
+                break;
+            case 2:
+                scanf("%d", &x);
+                insertBeg(x);
+                break;
+            case 3:
+                scanf("%d %d", &x, &p);
+                insertPos(x, p);
+                break;
+            case 4:
+                scanf("%d", &x);
+                deleteValue(x);
+                break;
+            case 5:
+                deleteBeg();
+                break;
+            case 6:
+                deleteEnd();
+                break;
+            case 7:
+                scanf("%d", &x);
+                search(x);
+                break;
+            case 8:
+                printList();
+                break;
+            case 9:
+                printReverse();
+                break;
+            case 10:
+                printf("%d\n", countNodes());
+                break;
+        }
+    }
+
+    return 0;
+}
