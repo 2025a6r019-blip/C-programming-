@@ -1,0 +1,59 @@
+#include <stdio.h>
+
+int main() {
+    int N, Q;
+    scanf("%d", &N);
+    scanf("%d", &Q);
+
+    int queue[N];
+    int front = 0, rear = -1, size = 0;
+
+    for(int i = 0; i < Q; i++) {
+        int type;
+        scanf("%d", &type);
+
+        if(type == 1) {
+            int x;
+            scanf("%d", &x);
+            if(size == N) {
+                printf("Queue Overflow\n");
+            } else {
+                rear++;
+                queue[rear] = x;
+                size++;
+            }
+        }
+
+        else if(type == 2) {
+            if(size == 0) {
+                printf("Queue Underflow\n");
+            } else {
+                printf("%d\n", queue[front]);
+                front++;
+                size--;
+            }
+        }
+
+        else if(type == 3) {
+            if(size == 0) {
+                printf("Queue Underflow\n");
+            } else {
+                printf("%d\n", queue[front]);
+            }
+        }
+
+        else if(type == 4) { 
+            if(size == 0) {
+                printf("Queue is Empty\n");
+            } else {
+                for(int j = front; j <= rear; j++) {
+                    printf("%d", queue[j]);
+                    if(j < rear) printf(" ");
+                }
+                printf("\n");
+            }
+        }
+    }
+
+    return 0;
+}
