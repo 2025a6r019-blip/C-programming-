@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char s[105];
+    char stack[100][1000];
+    int top = -1;
+
+    scanf("%s", s);
+    int n = strlen(s);
+
+    for (int i = n - 1; i >= 0; i--) {
+        if (isalnum(s[i])) {
+            stack[++top][0] = s[i];
+            stack[top][1] = '\0';
+        } else {
+            char a[1000], b[1000];
+            strcpy(a, stack[top--]);
+            strcpy(b, stack[top--]);
+
+            stack[++top][0] = '\0';
+            strcat(stack[top], "(");
+            strcat(stack[top], a);
+
+            char op[2] = {s[i], '\0'};
+            strcat(stack[top], op);
+
+            strcat(stack[top], b);
+            strcat(stack[top], ")");
+        }
+    }
+
+    printf("%s", stack[top]);
+    return 0;
+}
