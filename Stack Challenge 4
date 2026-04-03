@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+#define MAX 1000
+
+int stack1[MAX], stack2[MAX];
+int top1 = -1, top2 = -1;
+int n1, n2;
+
+void push(int s, int x) {
+    if (s == 1) {
+        if (top1 == n1 - 1) {
+            printf("Overflow\n");
+        } else {
+            stack1[++top1] = x;
+        }
+    } else { // s == 2
+        if (top2 == n2 - 1) {
+            printf("Overflow\n");
+        } else {
+            stack2[++top2] = x;
+        }
+    }
+}
+
+void pop(int s) {
+    if (s == 1) {
+        if (top1 == -1) {
+            printf("Underflow\n");
+        } else {
+            printf("%d\n", stack1[top1--]);
+        }
+    } else { // s == 2
+        if (top2 == -1) {
+            printf("Underflow\n");
+        } else {
+            printf("%d\n", stack2[top2--]);
+        }
+    }
+}
+
+void peek(int s) {
+    if (s == 1) {
+        if (top1 == -1) {
+            printf("Underflow\n");
+        } else {
+            printf("%d\n", stack1[top1]);
+        }
+    } else { // s == 2
+        if (top2 == -1) {
+            printf("Underflow\n");
+        } else {
+            printf("%d\n", stack2[top2]);
+        }
+    }
+}
+
+void display(int s) {
+    if (s == 1) {
+        if (top1 == -1) {
+            printf("Empty\n");
+        } else {
+            for (int i = top1; i >= 0; i--) {
+                printf("%d", stack1[i]);
+                if (i != 0) printf(" ");
+            }
+            printf("\n");
+        }
+    } else { // s == 2
+        if (top2 == -1) {
+            printf("Empty\n");
+        } else {
+            for (int i = top2; i >= 0; i--) {
+                printf("%d", stack2[i]);
+                if (i != 0) printf(" ");
+            }
+            printf("\n");
+        }
+    }
+}
+
+int main() {
+    int Q;
+    scanf("%d %d", &n1, &n2);
+    scanf("%d", &Q);
+
+    while (Q--) {
+        char operation[10];
+        int s, x;
+
+        scanf("%s", operation);
+
+        if (strcmp(operation, "PUSH") == 0) {
+            scanf("%d %d", &s, &x);
+            push(s, x);
+        }
+        else if (strcmp(operation, "POP") == 0) {
+            scanf("%d", &s);
+            pop(s);
+        }
+        else if (strcmp(operation, "PEEK") == 0) {
+            scanf("%d", &s);
+            peek(s);
+        }
+        else if (strcmp(operation, "DISPLAY") == 0) {
+            scanf("%d", &s);
+            display(s);
+        }
+    }
+
+    return 0;
+}
