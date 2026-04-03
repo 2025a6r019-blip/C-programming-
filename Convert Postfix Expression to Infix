@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char token[20];
+    char stack[100][2000];
+    int top = -1;
+
+    while (scanf("%s", token) == 1) {
+        if (isalnum(token[0])) {
+            strcpy(stack[++top], token);
+        } 
+        else {
+            char a[2000], b[2000];
+            strcpy(b, stack[top--]);
+            strcpy(a, stack[top--]);
+
+            snprintf(stack[++top], sizeof(stack[top]), "(%s%c%s)", a, token[0], b);
+        }
+    }
+
+    printf("%s", stack[top]);
+    return 0;
+}
